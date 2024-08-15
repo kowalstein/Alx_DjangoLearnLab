@@ -32,10 +32,10 @@ def register(request):
             return redirect('login')
     else:
         form = UserCreationForm()
-    return render(request, 'register.html', {'form': form})
+    return render(request, 'relationship_app/register.html', {'form': form})
 
 class LoginView(LoginView):
-    template_name = 'registration/login.html'
+    template_name = 'relationship_app/login.html'
     success_url = reverse_lazy('home')
     redirect_authenticated_user = True
 
