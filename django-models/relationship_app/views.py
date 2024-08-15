@@ -4,6 +4,8 @@ from .models import Book
 from django.views.generic.detail import DetailView
 from .models import Library
 
+from django.contrib.auth.decorators import user_passes_test
+
 def list_books(request):
     books = Book.objects.all()
     return render(request, "relationship_app/list_books.html", {'books': books})
@@ -18,4 +20,17 @@ class LibraryDetailView(DetailView):
         context['books'] = self.object.books.all()  # Assuming the related_name for books in Library model is 'books'
         return context
 
+from django.contrib.auth.decorators import user_passes_test
+
+@user_passes_test(lambda u: u.userprofile.role == 'Admin')
+def admin_view(request):
+    return render(request, 'admin_view.html')
+
+@user_passes_test(lambda u: u.userprofile.role == 'Librarian')
+def librarian_view(request):
+    return render(request, 'librarian_view.html')
+
+@user_passes_test(lambda u: u.userprofile.role == 'Member')
+def member_view(request):
+    return render(request, 'member_view.html')
 # Create your views here.
