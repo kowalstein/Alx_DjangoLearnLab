@@ -149,9 +149,35 @@ CSP_SCRIPT_SRC = ("'self'", "https://trusted.cdn.com")
 CSP_STYLE_SRC = ("'self'", "https://trusted.cdn.com")
 CSP_IMG_SRC = ("'self'", "data:", "https://trusted.images.com")
 
-# settings.py
 # Enabling XSS filter to prevent cross-site scripting attacks
 SECURE_BROWSER_XSS_FILTER = True
 
 # Preventing this site from being framed to protect against clickjacking
 X_FRAME_OPTIONS = 'DENY'
+
+# Enforce HTTPS connections for all requests
+SECURE_SSL_REDIRECT = True  # Redirects all HTTP to HTTPS
+
+# Enable HSTS to force HTTPS for the next year
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+
+# Include all subdomains in HSTS policy
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
+# Allow preloading of HSTS policy
+SECURE_HSTS_PRELOAD = True
+
+# Secure session cookies to be sent only over HTTPS
+SESSION_COOKIE_SECURE = True
+
+# Secure CSRF cookies to be sent only over HTTPS
+CSRF_COOKIE_SECURE = True
+
+# Prevent the site from being framed
+X_FRAME_OPTIONS = 'DENY'
+
+# Prevent MIME sniffing
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Enable XSS filter in the browser
+SECURE_BROWSER_XSS_FILTER = True
