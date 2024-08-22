@@ -46,16 +46,16 @@ class CustomUser(AbstractUser):
 
 from django.db import models
 
-class Article(models.Model):
+class Book(models.Model):
     title = models.CharField(max_length=100)
-    content = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    author = models.TextField()
+    publication_year = models.DateTimeField(auto_now_add=True)
+    uploaded_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         permissions = [
-            ("can_view", "Can view article"),
-            ("can_create", "Can create article"),
-            ("can_edit", "Can edit article"),
-            ("can_delete", "Can delete article"),
+            ("can_view", "Can view book"),
+            ("can_create", "Can create book"),
+            ("can_edit", "Can edit book"),
+            ("can_delete", "Can delete book"),
         ]
