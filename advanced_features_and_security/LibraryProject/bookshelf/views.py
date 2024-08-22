@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+from .forms import BookSearchForm
 # Create your views here.
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import get_object_or_404, render, redirect
@@ -32,3 +32,12 @@ def book_delete(request, pk):
         book.delete()
         return redirect('book_list')
     return render(request, 'book_confirm_delete.html', {'book': book})
+
+def book_list(request):
+    form = BookSearchForm(request.GET)
+    if form.is_valid():
+        search_query = form.cleaned_data.get('search', '')
+        books = Book.objects.filter(title__icontains=search_query)
+    else:
+        books = Book.objects.all()
+    return render(request, 'bookshelf/book_list.html', {'books': books, 'form': form})

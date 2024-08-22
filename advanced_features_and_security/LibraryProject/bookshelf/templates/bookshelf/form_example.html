@@ -1,0 +1,7 @@
+<form method="post">
+    <form action="{% url "bookshelf:create_user" %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form }}
+    </form>
+    <input type="submit" value="Submit">
+</form>

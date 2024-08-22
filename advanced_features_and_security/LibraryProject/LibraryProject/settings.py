@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-^#rhau%*tz^ixsby(=!yvksp)%o5+wh_%7^v0kf189-1y*rgxa'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -53,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'csp.middleware.CSPMiddleware',
 ]
 
 ROOT_URLCONF = 'LibraryProject.urls'
@@ -129,3 +130,28 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'bookshelf.CustomUser'
+
+# Enable browser XSS filter
+SECURE_BROWSER_XSS_FILTER = True
+
+# Prevent the browser from rendering the page if the page is in an iframe
+X_FRAME_OPTIONS = 'DENY'
+
+# Prevent browsers from interpreting files as a different MIME type
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# Define your CSP policy
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'", "https://trusted.cdn.com")
+CSP_STYLE_SRC = ("'self'", "https://trusted.cdn.com")
+CSP_IMG_SRC = ("'self'", "data:", "https://trusted.images.com")
+
+# settings.py
+# Enabling XSS filter to prevent cross-site scripting attacks
+SECURE_BROWSER_XSS_FILTER = True
+
+# Preventing this site from being framed to protect against clickjacking
+X_FRAME_OPTIONS = 'DENY'

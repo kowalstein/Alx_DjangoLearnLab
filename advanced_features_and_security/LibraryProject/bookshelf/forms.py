@@ -13,3 +13,6 @@ class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = CustomUser
         fields = ('username', 'email', 'date_of_birth', 'profile_photo')
+
+class BookSearchForm(forms.Form):
+    search = forms.CharField(max_length=100, required=False)
