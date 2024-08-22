@@ -181,3 +181,7 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 
 # Enable XSS filter in the browser
 SECURE_BROWSER_XSS_FILTER = True
+
+# Handle SSL behind a proxy
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
