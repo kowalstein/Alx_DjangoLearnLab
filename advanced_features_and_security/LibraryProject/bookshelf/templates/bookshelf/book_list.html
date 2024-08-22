@@ -1,0 +1,19 @@
+{% block title %}
+    Books List
+{% endblock  %}
+
+{% block content %}
+    <section>
+    <h1>Books List</h1>
+    {% for book in books %}
+        <article class="post">
+            <h2>
+                <a href="{% url "books:page" slug=book.slug %}">
+                {{ book.title }}
+                </a>
+            </h2>
+            <p>{{ book.author }} by {{ book.publication_year }}</p>
+        </article>
+    {% endfor %}
+    </section>
+{% endblock  %}

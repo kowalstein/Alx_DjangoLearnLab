@@ -6,12 +6,12 @@ from django.shortcuts import get_object_or_404, render, redirect
 from .models import Book
 
 @permission_required('bookshelf.can_view', raise_exception=True)
-def article_list(request):
+def book_list(request):
     articles = Book.objects.all()
     return render(request, 'book_list.html', {'books': Book})
 
 @permission_required('bookshelf.can_create', raise_exception=True)
-def article_create(request):
+def book_create(request):
     if request.method == 'POST':
         # Handle form submission to create a new article
         pass
@@ -34,7 +34,7 @@ def book_delete(request, pk):
     return render(request, 'book_confirm_delete.html', {'book': book})
 
 def book_list(request):
-    form = BookSearchForm(request.GET)
+    form = ExampleForm(request.GET)
     if form.is_valid():
         search_query = form.cleaned_data.get('search', '')
         books = Book.objects.filter(title__icontains=search_query)
