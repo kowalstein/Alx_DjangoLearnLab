@@ -6,6 +6,7 @@ from .models import Book
 from .seriealizers import Book
 from .seriealizers import BookSerializer
 from .filters import BookFilter
+from django_filters import rest_framework
 
 
 # Create your views here.
