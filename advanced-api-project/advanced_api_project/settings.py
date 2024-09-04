@@ -137,3 +137,5 @@ REST_FRAMEWORK = {
         'rest_framework.filters.SearchFilter',
     ),
 }
+
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
