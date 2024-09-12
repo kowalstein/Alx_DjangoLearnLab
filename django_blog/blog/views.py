@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserChangeForm
+from django.contrib.auth.forms import UserChangeForm, AuthenticationForm
 
 def register(request):
     if request.method == 'POST':
@@ -16,8 +16,17 @@ def register(request):
     return render(request, 'blog/register.html', {'form': form})
 
 def user_login(request):
-    # Use Django's built-in LoginView for this
-    pass
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            login(request, form.get_user())
+            if 'next' in request.POST:
+                return redirect(request.POST.get('next'))
+            else:
+                return redirect("profile")
+    else:
+        form = AuthenticationForm()
+    return render(request, 'users/login.html', { "form": form })
 
 def user_logout(request):
     logout(request)
