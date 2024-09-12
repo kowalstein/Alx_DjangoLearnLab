@@ -8,11 +8,9 @@ from .forms import CustomUserCreationForm
 from django.contrib.auth.models import User
 from .models import Post
 
-
-
 def post_page(request, slug):
     post = Post.objects.get(slug=slug)
-    return render(request, 'post_page.html', { 'blog': post})
+    return render(request, 'blog/post.html')
 
 def register(request):
     if request.method == 'POST':
@@ -23,7 +21,7 @@ def register(request):
             return redirect('/')
     else:
         form = CustomUserCreationForm()
-    return render(request, 'register.html', {'form': form})
+    return render(request, 'blog/register.html', {'form': form})
 
 def user_login(request):
     if request.method == 'POST':
@@ -34,7 +32,7 @@ def user_login(request):
             return redirect('/')
     else:
         form = AuthenticationForm()
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'blog/login.html', {'form': form})
 
 def user_logout(request):
     logout(request)
@@ -47,5 +45,5 @@ def profile(request):
         user.email = request.POST.get('email')
         user.save()
         return redirect('profile')
-    return render(request, 'profile.html')
+    return render(request, 'blog/profile.html')
 
