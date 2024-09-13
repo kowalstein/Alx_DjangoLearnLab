@@ -1,0 +1,27 @@
+<!-- comment_edit.html -->
+<!-- post_detail.html -->
+<h1>{{ post.title }}</h1>
+<p>{{ post.content }}</p>
+
+<h2>Comments</h2>
+<ul>
+    {% for comment in comments %}
+    <li>
+        <strong>{{ comment.author }}</strong> ({{ comment.created_at }})
+        <p>{{ comment.content }}</p>
+        {% if comment.author == user %}
+            <a href="{% url 'comment_edit' post.pk comment.pk %}">Edit</a>
+            <a href="{% url 'comment_delete' comment.pk %}">Delete</a>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+
+{% if user.is_authenticated %}
+<h3>Add a Comment</h3>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Post Comment</button>
+</form>
+{% endif %}
