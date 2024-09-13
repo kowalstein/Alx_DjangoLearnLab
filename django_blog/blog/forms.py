@@ -2,6 +2,7 @@
 
 from django import forms
 from .models import Post
+from .models import Tag
 from .models import Comment
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -21,9 +22,14 @@ class CustomUserCreationForm(UserCreationForm):
         return user
 
 class PostForm(forms.ModelForm):
+    tags = forms.ModelMultipleChoiceField(
+        queryset=Tag.objects.all(),
+        required=False,
+        widget=forms.CheckboxSelectMultiple
+    )
     class Meta:
         model = Post
-        fields = ['title', 'content']
+        fields = ['title', 'content', 'tags']
 
 class CommentForm(forms.ModelForm):
     class Meta:
