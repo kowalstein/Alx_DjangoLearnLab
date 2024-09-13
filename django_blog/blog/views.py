@@ -14,7 +14,7 @@ from .forms import PostForm
 from .forms import CommentForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Q
-from django.views import View
+from taggit.models import Tag
 
 def post_page(request, slug):
     post = Post.objects.get(slug=slug)
@@ -142,3 +142,13 @@ def search(request):
     else:
         posts = Post.objects.none()
     return render(request, 'blog/search_results.html', {'posts': posts, 'query': query})
+
+class PostByTagListView(ListView):
+    model = Post
+    template_name = 'blog/post_by_tag_list.html'  # Adjust to your template location
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        tag_slug = self.kwargs.get('tag_slug')
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        return Post.objects.filter(tags__in=[tag])
