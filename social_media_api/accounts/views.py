@@ -17,11 +17,13 @@ class LoginView(APIView):
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data
-        token, created = Token.objects.get_or_create(user=user)
-        return Response({'token': token.key})
+        token_data = serializer.validated_data
+        return Response({
+            'token': token_data['token'],
+            'user': UserSerializer(token_data['user']).data
+        })
 
-class ProfileView(APIView)
+class ProfileView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
