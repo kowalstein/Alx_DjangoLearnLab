@@ -39,15 +39,18 @@ class ProfileView(APIView):
         serializer.save()
         return Response(serializer.data)
 
-class FollowViewSet(viewsets.ViewSet):
+class FollowViewSet(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    def follow_user(self, request, user_id):
+    def post(self, request, user_id):
         user_to_follow = get_object_or_404(CustomUser, id=user_id)
         request.user.following.add(user_to_follow)
         return Response({'status': 'now following'}, status=status.HTTP_200_OK)
-    
-    def unfollow_user(self, request, user_id):
+
+class UnfollowViewSet(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, user_id):
         user_to_unfollow = get_object_or_404(CustomUser, id=user_id)
         request.user.following.remove(user_to_unfollow)
         return Response({'status': 'no longer following'}, status=status.HTTP_200_OK)
