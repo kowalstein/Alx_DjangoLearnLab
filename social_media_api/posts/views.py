@@ -1,6 +1,7 @@
 from rest_framework import viewsets, permissions, filters
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Post, Comment, Like
 from .serializers import PostSerializers, CommentSerializer
@@ -32,7 +33,7 @@ class PostViewSet(viewsets.ModelViewSet):
         instance.delete()
 
     def like_post(self, request, pk):
-        post = self.get_object()
+        post = generics.get_object_or_404(Post, pk=pk)
         like, created = Like.objects.get_or_create(user=request.user, post=post)
 
         if created:
@@ -46,7 +47,7 @@ class PostViewSet(viewsets.ModelViewSet):
         return Response({'status': 'already liked'}, status=status.HTTP_400_BAD_REQUEST)
     
     def unlike_post(self, response, pk):
-        post = self.get_object()
+        post = generics.get_object_or_404(Post, pk=pk)
         try:
             like = Like.objects.get(user=request.user, post=post)
             like.delete()
