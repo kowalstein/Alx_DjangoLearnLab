@@ -53,6 +53,6 @@ class FeedViewSet(viewsets.ViewSet):
 
     def list(self, request):
         followed_users = request.user.following.all()
-        posts = Post.objects.filter(author__in=followed_users).order_by('-created_at')
+        posts = Post.objects.filter(author__in=following_users).order_by('-created_at')
         serializers = PostSerializers(posts, many=True)
         return Response(serializers.data)
