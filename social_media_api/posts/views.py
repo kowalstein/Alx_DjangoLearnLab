@@ -1,4 +1,5 @@
 from rest_framework import viewsets, permissions, filters
+from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Post, Comment
 from .serializers import PostSerializers, CommentSerializer
@@ -46,3 +47,12 @@ class CommentViewSet(viewsets.ModelViewSet):
         if instance.author != self.request.user:
             raise permissions.PermissionDenied("You do not have permission to delete this comment.")
         instance.delete()
+
+class FeedViewSet(viewsets.ViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def list(self, request):
+        followed_users = request.user.following.all()
+        posts = Post.objects.filter(author__in=followed_users).order_by('-created_at')
+        serializers = PostSerializers(posts, many=True)
+        return Response(serializers.data)

@@ -1,9 +1,10 @@
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, viewsets, status
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import CustomUser
 from .serializers import UserSerializer, LoginSerializer
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 class RegisterView(generics.CreateAPIView):
@@ -37,3 +38,16 @@ class ProfileView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+
+class FollowViewSet(viewsets.ViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def follow_user(self, request, user_id):
+        user_to_follow = get_object_or_404(CustomUser, id=user_id)
+        request.user.following.add(user_to_follow)
+        return Response({'status': 'now following'}, status=status.HTTP_200_OK)
+    
+    def unfollow_user(self, request, user_id):
+        user_to_unfollow = get_object_or_404(CustomUser, id=user_id)
+        request.user.following.remove(user_to_unfollow)
+        return Response({'status': 'no longer following'}, status=status.HTTP_200_OK)
